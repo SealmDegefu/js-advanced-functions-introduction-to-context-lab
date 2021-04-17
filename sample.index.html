@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Recorder App</title>
+</head>
+<body>
+    
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+<script>
+    let mic,recorder,soundFile
+    let state = 0
+    function setup(){
+        createCanvas(400,400)
+        background(200)
+        fill(0)
+        text("Enable Mic and click the mouse to begin recording",20,20)
+        mic = new p5.AudioIn()
+        mic.start()
+        recorder = new p5.SoundRecorder()
+        recorder.setInput(mic)
+        soundFile = new p5.SoundFile()
+    }
+    function mousePressed(){
+        getAudioContext().resume()
+        if(state == 0 && mic.enabled){
+            recorder.record(soundFile)
+            background(255, 0, 0)
+            text("Recording started click to stop", 20,20)
+            state++
+        }
+        else if(state == 1){
+            recorder.stop()
+            background(0,255,0)
+            text("Recording stopped click to play and save audio file", 20, 20)
+            state++
+        }
+        else if(state ==2){
+            soundFile.play()
+            saveSound(soundFile, "mySound.wav")
+            state++
+        }
+    }
+    function touchStarted(){
+        getAudioContext().resume()
+    }
+</script>
+
+</html>
